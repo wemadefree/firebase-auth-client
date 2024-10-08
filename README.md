@@ -4,7 +4,7 @@ This package is an authentication client for the [PointerClient](https://github.
 The package is written in TypeScript and utilizes Axios.
 
 ### Setup
-```npm install @we-made/firebase-auth-client-ts```
+```npm install @we-made/firebase-auth-client```
 
 Import the package into you main javascript file and create a new pointer client.
 
