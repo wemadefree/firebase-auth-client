@@ -15,7 +15,8 @@ Example for Vue.js (main.js):
 ```
 import { createApp } from 'vue'
 import App from './App.vue'
-import { PointerClient, FirebaseAuthClient } from '@we-made/pointer-client'
+import { PointerClient } from '@we-made/pointer-client'
+import { FirebaseAuthClient } from '@we-made/firebase-auth-client'
 
 const app = createApp(App)
 
