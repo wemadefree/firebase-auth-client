@@ -1,0 +1,1 @@
+export { FirebaseAuthClient } from './src/firebase';
