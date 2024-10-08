@@ -1,4 +1,4 @@
-## Service account auth client
+## Firebase auth client
 This package is an authentication client for the [PointerClient](https://github.com/wemadefree/pointer-client-ts). This client allows you to utilize the PointerClient client side with firebase as authentication.
 
 The package is written in TypeScript and utilizes Axios.
