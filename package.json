@@ -1,6 +1,6 @@
 {
   "name": "@we-made/firebase-auth-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Auth client for firebase. Used in combination with @we-made/pointer-client",
   "repository": "https://github.com/wemadefree/firebase-auth-client",
   "main": "dist/index.js",
