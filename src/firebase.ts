@@ -3,6 +3,9 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "fir
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import axios from 'axios';
+import { TokenStore } from './store/tokenStore';
+import CookieStore from './store/cookieStore';
+import SessionStore from './store/sessionStore';
 
 export class FirebaseAuthClient implements AuthClient {
     provider: any = new GoogleAuthProvider();
@@ -11,9 +14,15 @@ export class FirebaseAuthClient implements AuthClient {
     baseUrl: string;
     config: Object|string;
     loginPossibilities: string[] = ['google.com'];
-    constructor(baseUrl: string, config: Object|string) {
+    tokenStorage: TokenStore;
+    constructor(baseUrl: string, config: Object|string, tokenStorage: string = 'sessionStorage') {
         this.baseUrl = baseUrl;
         this.config = config;
+        if (tokenStorage === 'cookie') {
+            this.tokenStorage = new CookieStore();
+        } else {
+            this.tokenStorage = new SessionStore();
+        }
     }
 
     async build() {
@@ -32,23 +41,23 @@ export class FirebaseAuthClient implements AuthClient {
     }
 
     async getAccessToken(): Promise<string> {
-        const token: string|null = window.sessionStorage.getItem('accessToken')
+        const token: string|null = this.tokenStorage.getToken();
         if (!token) {
             console.error('Not authenticated');
         } else if (this.isTokenExpired(token)) {
             firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
                     user.getIdToken().then((token: any) => {
-                        window.sessionStorage.setItem('accessToken', token)
+                        this.tokenStorage.setToken(token)
                     })
                 } else {
                     console.error('Not authenticated');
-                    window.sessionStorage.removeItem('accessToken')
+                    this.tokenStorage.removeToken()
                 }
             }); 
         }
 
-        return window.sessionStorage.getItem('accessToken') ?? ''
+        return this.tokenStorage.getToken();
     }
 
     initilizeFirebase(configOptions: any) {
@@ -81,7 +90,7 @@ export class FirebaseAuthClient implements AuthClient {
             const user = result.user;
             user.getIdToken().then((token: any) => {
                 window.sessionStorage.removeItem('loginFailed')
-                window.sessionStorage.setItem('accessToken', token)
+                this.tokenStorage.setToken(token)
                 window.location.reload()
             });
             // IdP data available using getAdditionalUserInfo(result)
@@ -104,7 +113,7 @@ export class FirebaseAuthClient implements AuthClient {
     signOut() {
         const auth = getAuth()
         auth.signOut().then(() => {
-            window.sessionStorage.removeItem('accessToken')
+            this.tokenStorage.removeToken()
             window.location.reload()
         }).catch((error) => {
             console.log(error)

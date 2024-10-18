@@ -58,3 +58,16 @@ const authClient = new FirebaseAuthClient(
 The ```FirebaseAuthClient``` requires a user to authenticate to be able to query the pointer API. To authenticate the user, call the ```login``` function. This function will trigger a google login by default. Use the ```getLoginOptions``` function to get all available login providers. 
 
 Check the [PointerClient](https://github.com/wemadefree/pointer-client-ts?tab=readme-ov-file#available-functions) available functions section of the github repository for more information about the ```login``` and ```getLoginOptions``` functions.
+
+### Token storage
+By default the ```FirebaseAuthClient``` stores the access token in sessionStorage. It's possible to change this to be cookie based by passing the string 'cookie' as a third parameter when initiating the ```FirebaseAuthClient```.
+
+```
+const authClient = new FirebaseAuthClient(
+    process.env.VUE_APP_POINTER_BASE_URL, // Base URL for the API
+    process.env.VUE_APP_POINTER_PORTAL_CONFIG_KEY // Portal config key for pointer. Used to fetch firebase credentials,
+    'cookie'
+)
+```
+
+In both instances the naming of the stored token is ```accessToken```
