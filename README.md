@@ -55,7 +55,7 @@ const authClient = new FirebaseAuthClient(
 )
 ```
 ### Authentication 
-The ```FirebaseAuthClient``` requires a user to authenticate to be able to query the pointer API. To authenticate the user, call the ```login``` function. This function will trigger a google login by default. Use the ```getLoginOptions``` function to get all available login providers. 
+The ```FirebaseAuthClient``` requires a user to authenticate to be able to query the pointer API. To authenticate the user, call the ```login``` function or the ```loginWithEmailAndPassword``` function. The ```login``` function will trigger a google login by default. Use the ```getLoginOptions``` function to get all available login providers.
 
 Check the [PointerClient](https://github.com/wemadefree/pointer-client-ts?tab=readme-ov-file#available-functions) available functions section of the github repository for more information about the ```login``` and ```getLoginOptions``` functions.
 

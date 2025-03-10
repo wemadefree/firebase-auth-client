@@ -1,5 +1,5 @@
 import { AuthClient } from './authClient';
-import { getAuth, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, OAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import axios from 'axios';
@@ -38,6 +38,25 @@ export class FirebaseAuthClient implements AuthClient {
         } else {
             console.error('This login provider is not enabled')
         }
+    }
+
+    async loginWithEmailAndPassword(email: string, password: string) {
+        console.log('Logging in with email and password')
+        await signInWithEmailAndPassword(this.auth, email, password)
+        .then((result) => {
+            const user = result.user;
+            user.getIdToken().then((token: any) => {
+                window.sessionStorage.removeItem('loginFailed')
+                this.tokenStorage.setToken(token)
+                window.location.reload()
+            });
+        }).catch((error) => {
+            const errorCode = error.code
+            const errorMessage = error.message
+            console.log('Errors: ' + errorCode, errorMessage)
+            window.sessionStorage.setItem('loginFailed', errorMessage)
+            window.location.reload()
+        });
     }
 
     async getAccessToken(): Promise<string> {
