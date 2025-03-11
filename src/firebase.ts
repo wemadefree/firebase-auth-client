@@ -45,6 +45,7 @@ export class FirebaseAuthClient implements AuthClient {
         await signInWithEmailAndPassword(this.auth, email, password)
         .then((result) => {
             const user = result.user;
+            window.sessionStorage.setItem('authenticatedUser', JSON.stringify(user))
             user.getIdToken().then((token: any) => {
                 window.sessionStorage.removeItem('loginFailed')
                 this.tokenStorage.setToken(token)
@@ -55,6 +56,7 @@ export class FirebaseAuthClient implements AuthClient {
             const errorMessage = error.message
             console.log('Errors: ' + errorCode, errorMessage)
             window.sessionStorage.setItem('loginFailed', errorMessage)
+            window.sessionStorage.removeItem('authenticatedUser')
             window.location.reload()
         });
     }
@@ -107,6 +109,7 @@ export class FirebaseAuthClient implements AuthClient {
             }
             // The signed-in user info.
             const user = result.user;
+            window.sessionStorage.setItem('authenticatedUser', JSON.stringify(user))
             user.getIdToken().then((token: any) => {
                 window.sessionStorage.removeItem('loginFailed')
                 this.tokenStorage.setToken(token)
@@ -124,6 +127,7 @@ export class FirebaseAuthClient implements AuthClient {
             // The AuthCredential type that was used
             const credential = GoogleAuthProvider.credentialFromError(error)
             window.sessionStorage.setItem('loginFailed', errorMessage)
+            window.sessionStorage.removeItem('authenticatedUser')
             window.location.reload()
             // ...
         });
@@ -133,6 +137,7 @@ export class FirebaseAuthClient implements AuthClient {
         const auth = getAuth()
         auth.signOut().then(() => {
             this.tokenStorage.removeToken()
+            window.sessionStorage.removeItem('authenticatedUser')
             window.location.reload()
         }).catch((error) => {
             console.log(error)

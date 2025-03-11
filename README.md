@@ -59,6 +59,9 @@ The ```FirebaseAuthClient``` requires a user to authenticate to be able to query
 
 Check the [PointerClient](https://github.com/wemadefree/pointer-client-ts?tab=readme-ov-file#available-functions) available functions section of the github repository for more information about the ```login``` and ```getLoginOptions``` functions.
 
+#### Authenticated user
+The authenticated user result from firebase is stored in ```sessionStorage``` with the key ```authenticatedUser```
+
 ### Token storage
 By default the ```FirebaseAuthClient``` stores the access token in sessionStorage. It's possible to change this to be cookie based by passing the string 'cookie' as a third parameter when initiating the ```FirebaseAuthClient```.
 
