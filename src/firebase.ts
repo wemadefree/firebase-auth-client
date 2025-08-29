@@ -14,6 +14,7 @@ export class FirebaseAuthClient implements AuthClient {
     baseUrl: string;
     config: Object|string;
     loginPossibilities: string[] = ['google.com'];
+    loginPossibilitiesCustomParams: {[key: string]: any} = {}
     tokenStorage: TokenStore;
     constructor(baseUrl: string, config: Object|string, tokenStorage: string = 'sessionStorage') {
         this.baseUrl = baseUrl;
@@ -41,7 +42,6 @@ export class FirebaseAuthClient implements AuthClient {
     }
 
     async loginWithEmailAndPassword(email: string, password: string) {
-        console.log('Logging in with email and password')
         await signInWithEmailAndPassword(this.auth, email, password)
         .then((result) => {
             const user = result.user;
@@ -99,6 +99,11 @@ export class FirebaseAuthClient implements AuthClient {
             this.provider = new GoogleAuthProvider();
         } else {
             this.provider = new OAuthProvider(providerId)
+            if(this.loginPossibilitiesCustomParams[providerId]) {
+                this.provider.setCustomParameters({
+                    ...this.loginPossibilitiesCustomParams[providerId],
+                });
+            }
         }
         signInWithPopup(this.auth, this.provider)
         .then((result) => {
@@ -172,6 +177,15 @@ export class FirebaseAuthClient implements AuthClient {
                 loginOptions.forEach((option: any) => {
                     if (option.isEnabled) {
                         this.loginPossibilities.push(option.providerId);
+
+                        if(option.providerCustomParams) {
+                        // Transform { key: "tenant", value: "someValue" } into { "tenant": "someValue" }
+                        const transformedParams = option.providerCustomParams.reduce((acc: any, param: any) => {
+                            acc[param.key] = param.val;
+                            return acc;
+                        }, {});
+                        this.loginPossibilitiesCustomParams[option.providerId] = transformedParams;
+                        }
                     }
                 })
             }).catch((error) => {
