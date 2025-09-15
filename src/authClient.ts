@@ -5,4 +5,5 @@ export interface AuthClient {
     loginWithEmailAndPassword?(email: string, password: string): void;
     getAccessToken(): Promise<string>;
     isTokenExpired(token: string): boolean;
+    sendPasswordResetEmail?(email: string): void;
 }

@@ -61,6 +61,13 @@ export class FirebaseAuthClient implements AuthClient {
         });
     }
 
+    async sendPasswordResetEmail(email: string) {
+        console.log('Send password reset email to ' + email);
+        await firebase.auth().sendPasswordResetEmail(email, {
+            url: `${location.origin}/#/login/`
+          })
+    }
+
     async getAccessToken(): Promise<string> {
         const token: string|null = this.tokenStorage.getToken();
         if (!token) {
