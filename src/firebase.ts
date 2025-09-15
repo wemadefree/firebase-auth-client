@@ -68,6 +68,37 @@ export class FirebaseAuthClient implements AuthClient {
           })
     }
 
+    async createUserWithEmailAndPassword(email: string, password: string): Promise<boolean> {
+        console.log('Create user with email ' + email);
+        await firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log('User created: ', user);
+            return true;
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error('Error creating user: ', errorCode, errorMessage);
+            return false;
+            // ..
+          });
+        return false;
+    }
+
+    async sendEmailVerification() {
+        const user = firebase.auth().currentUser;
+        if (user) {
+            await user.sendEmailVerification({
+                url: location.href
+            })
+        } else {
+            console.error('No user is signed in.');
+        }
+    }
+
     async getAccessToken(): Promise<string> {
         const token: string|null = this.tokenStorage.getToken();
         if (!token) {

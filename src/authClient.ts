@@ -6,4 +6,6 @@ export interface AuthClient {
     getAccessToken(): Promise<string>;
     isTokenExpired(token: string): boolean;
     sendPasswordResetEmail?(email: string): void;
+    createUserWithEmailAndPassword?(email: string, password: string): Promise<boolean>;
+    sendEmailVerification?(): void;
 }
