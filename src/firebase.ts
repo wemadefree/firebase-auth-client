@@ -82,6 +82,7 @@ export class FirebaseAuthClient implements AuthClient {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.error('Error creating user: ', errorCode, errorMessage);
+            window.sessionStorage.setItem('signupFailed', errorCode)
             return false;
             // ..
           });
