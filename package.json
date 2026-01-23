@@ -1,6 +1,6 @@
 {
   "name": "@we-made/firebase-auth-client",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Auth client for firebase. Used in combination with @we-made/pointer-client",
   "repository": {
     "type": "git",
