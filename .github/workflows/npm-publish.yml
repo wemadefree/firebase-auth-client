@@ -27,7 +27,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      id-token: write  # Required for trusted publishing
+      id-token: write  # Required for provenance
       contents: read
     steps:
       - uses: actions/checkout@v4
@@ -35,6 +35,9 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
+          scope: '@we-made'
+      - run: npm install
       - run: npm run build
-      - run: npm publish --provenance --access=public
+      - run: npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
