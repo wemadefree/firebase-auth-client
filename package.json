@@ -2,7 +2,10 @@
   "name": "@we-made/firebase-auth-client",
   "version": "1.0.7",
   "description": "Auth client for firebase. Used in combination with @we-made/pointer-client",
-  "repository": "https://github.com/wemadefree/firebase-auth-client",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wemadefree/firebase-auth-client.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
