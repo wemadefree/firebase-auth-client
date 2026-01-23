@@ -70,12 +70,13 @@ export class FirebaseAuthClient implements AuthClient {
 
     async createUserWithEmailAndPassword(email: string, password: string): Promise<boolean> {
         console.log('Create user with email ' + email);
+        let success = false;
         await firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
             console.log('User created: ', user);
-            return true;
+            success = true;
             // ...
           })
           .catch((error) => {
@@ -83,10 +84,10 @@ export class FirebaseAuthClient implements AuthClient {
             const errorMessage = error.message;
             console.error('Error creating user: ', errorCode, errorMessage);
             window.sessionStorage.setItem('signupFailed', errorCode)
-            return false;
+            success = false;
             // ..
           });
-        return false;
+        return success;
     }
 
     async sendEmailVerification() {
